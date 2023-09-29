@@ -70,6 +70,36 @@ Adds a check to determine if an array has the same number of elements and values
 Parameters:
 - arr (array): An array to compare against. This method checks both the length and the values at corresponding indexes. Use "!check" as a value in the array to indicate that the value at that index should exist but is not checked.
 
+#### regex(pattern) <a name="regex-pattern"></a>
+Adds a check to determine if the value matches a specified regular expression pattern.
+
+Parameters:
+- pattern (RegExp): A regular expression pattern to match against the value.
+
+Returns:
+The IF instance, allowing for method chaining.
+
+Throws:
+An error if the provided pattern is not an instance of RegExp.
+
+Example Usage:
+```js
+import IF from './IF';
+
+const myCheck = new IF();
+
+const valueToCheck = 'Hello, World!';
+const regexPattern = /^[A-Za-z\s]+$/; // Matches alphabetic characters and spaces
+
+const isAlphabetic = myCheck
+  .regex(regexPattern)
+  .check(valueToCheck);
+
+console.log(`Does '${valueToCheck}' contain only alphabetic characters and spaces? ${isAlphabetic}`); // Should output: "Does 'Hello, World!' contain only alphabetic characters and spaces? true"
+```
+
+You can use the regex method to check if a value matches a specified regular expression pattern, enabling more advanced conditional checks in your application.
+
 #### check(value) <a name="check-value"></a>
 Performs all the added checks on the provided value.
 

@@ -82,6 +82,17 @@ class IF {
         this.checks.push(testArray)
         return this
     }
+
+    // add a test whether value matches a regular expression pattern
+    regex(pattern) {
+        if (!(pattern instanceof RegExp)) {
+            throw new Error("Argument must be a RegExp object");
+        }
+
+        const func = (value) => pattern.test(value);
+        this.checks.push(func);
+        return this;
+    }
 }
 
 export default IF
