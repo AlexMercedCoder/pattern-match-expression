@@ -41,3 +41,5 @@ class MATCH{
         return this
     }
 }
+
+export default MATCH

@@ -78,8 +78,10 @@ class IF {
             }
             return true
         }
-        
+
         this.checks.push(testArray)
         return this
     }
 }
+
+export default IF
