@@ -1,4 +1,4 @@
-// IF.d.ts
+// IF
 declare class IF {
     checks: Function[];
   
@@ -25,13 +25,15 @@ declare class IF {
   
   export default IF;
   
-  // MATCH.d.ts
+  // MATCH
   declare type PatternFunction = (value: any) => boolean;
   declare type ActionFunction = (value: any) => any;
-  declare type Pattern = [PatternFunction, ActionFunction]
+  declare type Pattern = [PatternFunction, ActionFunction];
   
   declare class MATCH {
     patterns: Array<Pattern>;
+
+    default: ActionFunction;
   
     match(value: any): any;
   
@@ -41,6 +43,8 @@ declare class IF {
       pattern: PatternFunction | IF,
       action: ActionFunction
     ): this;
+
+    setDefault(action: ActionFunction): this;
   }
   
   export default MATCH;

@@ -1,6 +1,6 @@
 {
   "name": "pattern-match-expression",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "pattern match expression library for javascript",
   "main": "index.js",
   "type": "module",
