@@ -1,3 +1,5 @@
-export import MATCH from "./match.js"
-export import IF from "./if.js"
+import MATCH from "./match.js"
+import IF from "./if.js"
+
+export default {MATCH, IF}
 

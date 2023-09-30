@@ -1,0 +1,22 @@
+{
+  "name": "pattern-match-expression",
+  "version": "0.0.1",
+  "description": "pattern match expression library for javascript",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "types": "types.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexMercedCoder/pattern-match-expression.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexMercedCoder/pattern-match-expression/issues"
+  },
+  "homepage": "https://github.com/AlexMercedCoder/pattern-match-expression#readme"
+}

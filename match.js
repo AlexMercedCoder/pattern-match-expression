@@ -5,7 +5,7 @@ class MATCH{
 
     // find the first match and return its value
     match(value){
-        for (let [pattern, action] of patterns){
+        for (let [pattern, action] of this.patterns){
             // check if pattern is matched
             if(pattern(value)){
                 return action(value)
@@ -16,7 +16,7 @@ class MATCH{
     // match against all patterns and return array of values returned by actions
     matchAll(value){
         const values = []
-        for (let [pattern, action] of patterns){
+        for (let [pattern, action] of this.patterns){
             // check if pattern is matched
             if(pattern(value)){
                 values.push(action(value))
