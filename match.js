@@ -2,6 +2,7 @@ import IF from "./if.js"
 
 class MATCH{
     patterns = []
+    default = (v) => console.log(v, "matched no pattern")
 
     // find the first match and return its value
     match(value){
@@ -11,6 +12,7 @@ class MATCH{
                 return action(value)
             }
         }
+        return this.default(value)
     }
 
     // match against all patterns and return array of values returned by actions
@@ -27,7 +29,7 @@ class MATCH{
 
     // register a pattern to match
     when(pattern, action){
-        if (!(pattern instanceof Function) && !(patten instanceof IF)){
+        if (!(pattern instanceof Function) && !(pattern instanceof IF)){
             throw "first arg must be function or IF object"
         }
         if (!(action instanceof Function)){
@@ -38,6 +40,14 @@ class MATCH{
             return this
         }
         this.patterns.push([pattern, action])
+        return this
+    }
+
+    setDefault(action){
+        if (!(action instanceof Function)){
+            throw "arg1 must be a Function"
+        }
+        this.default = action
         return this
     }
 }

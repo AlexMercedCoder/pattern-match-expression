@@ -8,7 +8,8 @@ The IF class is a utility class designed to facilitate conditional checks on var
 To use the IF class, you must first create an instance of it:
 
 ```js
-import {IF} from 'pattern-match-expression';
+import matchTools from 'pattern-match-expression';
+const {MATCH, IF} = matchTools;
 
 const myCheck = new IF();
 You can then chain multiple checks together to evaluate a value against various conditions:
@@ -84,7 +85,8 @@ An error if the provided pattern is not an instance of RegExp.
 
 Example Usage:
 ```js
-import IF from './IF';
+import matchTools from 'pattern-match-expression';
+const {MATCH, IF} = matchTools;
 
 const myCheck = new IF();
 
@@ -113,7 +115,8 @@ Example Usage
 Here's an example of how to use the IF class to perform various checks:
 
 ```js
-import {IF} from 'pattern-match-expression';
+import matchTools from 'pattern-match-expression';
+const {MATCH, IF} = matchTools;
 
 const myCheck = new IF();
 
@@ -138,7 +141,8 @@ The MATCH class is a versatile utility class that allows you to define patterns 
 To use the MATCH class, you must first create an instance of it:
 
 ```js
-import {MATCH} from 'pattern-match-expression';
+import matchTools from 'pattern-match-expression';
+const {MATCH, IF} = matchTools;
 
 const myMatcher = new MATCH();
 ```
@@ -190,7 +194,8 @@ Example Usage
 Here's an example of how to use the MATCH class to match values against various patterns:
 
 ```js
-import {MATCH} from 'pattern-match-expression';
+import matchTools from 'pattern-match-expression';
+const {MATCH, IF} = matchTools;
 
 const myMatcher = new MATCH();
 
@@ -207,13 +212,49 @@ console.log(result); // Should output: "Matched the value 42"
 
 You can register multiple patterns and their associated actions using the when method and then use match or matchAll to find matches and execute actions accordingly.
 
+#### setDefault(action: Function): MATCH
+The setDefault method allows you to set a default action that will be executed when none of the registered patterns in the MATCH instance matches the input value.
+
+Parameters
+
+- action (Function): A JavaScript function that represents the action to be performed when none of the registered patterns match. This function can accept any number of arguments and perform any desired logic.
+
+Returns
+- MATCH: The MATCH instance itself, which allows for method chaining.
+
+Throws
+- Throws an error if the action argument is not a valid JavaScript function.
+
+```js
+Copy code
+const matchInstance = new MATCH();
+
+// Register patterns
+matchInstance.when((value) => value === 1, () => 'One');
+matchInstance.when((value) => value === 2, () => 'Two');
+
+// Set a default action
+matchInstance.setDefault(() => 'No match found');
+
+// Use match()
+const result1 = matchInstance.match(3); // Returns 'No match found'
+
+// Use matchAll()
+const result2 = matchInstance.matchAll(4); // Returns ['No match found']
+```
+
+In this example, the setDefault method is used to define a default action that gets executed when none of the registered patterns match the input value. The setDefault method returns the MATCH instance, allowing you to chain it with other methods.
+
+Note that the setDefault method throws an error if the provided action argument is not a valid JavaScript function.
+
 ## Using MATCH with IF
 You can enhance the flexibility of the MATCH class by using it in conjunction with instances of the IF class. This allows you to define complex patterns using the chainable methods of IF and then register these patterns with the MATCH class for matching against values. Here's how you can use MATCH with IF:
 
 Create an instance of MATCH:
 
 ```js
-import {MATCH} from 'pattern-match-expression';
+import matchTools from 'pattern-match-expression';
+const {MATCH, IF} = matchTools;
 
 const myMatcher = new MATCH();
 ```
@@ -221,7 +262,8 @@ const myMatcher = new MATCH();
 Create an instance of IF and define your patterns using its chainable methods. For example, let's define two patterns using IF:
 
 ```js
-import {IF} from './IF';
+import matchTools from 'pattern-match-expression';
+const {MATCH, IF} = matchTools;
 
 const pattern1 = new IF()
   .type('number')
@@ -249,6 +291,80 @@ const result2 = myMatcher.match(value2);
 
 console.log(result1); // Should output: "Pattern 1 matched for 42"
 console.log(result2); // Should output: "Pattern 2 matched for OpenAI"
+```
+
+## Fizz Buzz Code Example
+
+```js
+
+import matchTools from "pattern-match-expression"
+
+const {MATCH, IF} = matchTools
+
+// Create Expressions
+const divisibleBy3 = new IF().divisibleBy(3).check
+const divisibleBy5 = new IF().divisibleBy(5).check
+const divisibleBy3and5 = new IF().divisibleBy(3).divisibleBy(5).check
+
+// Setup Matcher
+const fizzBuzzMatch = new MATCH()
+    .when(divisibleBy3and5, () => "FizzBuzz")
+    .when(divisibleBy3, () => "Fizz")
+    .when(divisibleBy5, () => "Buzz")
+    .setDefault((v) => v)
+
+// Fizz Buzz
+for(let i = 1; i <= 15; i++){
+    console.log(fizzBuzzMatch.match(i))
+}
+
+```
+
+## EJS Parser (Code Example)
+
+```js
+import matchTools from "pattern-match-expression"
+
+const {MATCH, IF} = matchTools
+
+// Create Expressions
+const isPlaceholder = new IF().regex(/<%=([\s\S]+?)%>/).check;
+
+// Setup Matcher
+const ejsParser = new MATCH()
+    .when(isPlaceholder, (value) => {
+        // Extract the placeholder expression from the matched string
+        const match = /<%=([\s\S]+?)%>/.exec(value);
+        if (match) {
+            const expression = match[1];
+            
+            // Return a function that evaluates the expression within the provided data object
+            return (data) => eval(expression);
+        }
+        
+        return value;
+    })
+    .setDefault((v) => v);
+
+// Sample EJS template
+const template = "Hello, <%= name %>! Today is <%= day %>.";
+
+// Data object with values to replace placeholders
+const data = {
+    name: "John",
+    day: "Monday"
+};
+
+// Parse and render the EJS template
+const renderedTemplate = template.replace(/<%=([\s\S]+?)%>/g, (match, expression) => {
+    const renderFunc = ejsParser.match(match);
+    if (typeof renderFunc === 'function') {
+        return renderFunc(data);
+    }
+    return match;
+});
+
+console.log(renderedTemplate);
 ```
 
 By combining the power of MATCH and IF, you can create intricate matching logic based on the conditions defined in your IF instances and execute actions when patterns are successfully matched. This approach provides a versatile way to handle complex conditional scenarios in your applications.
